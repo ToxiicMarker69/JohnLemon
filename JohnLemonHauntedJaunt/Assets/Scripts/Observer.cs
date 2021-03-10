@@ -14,6 +14,7 @@ public class Observer : MonoBehaviour
         if (other.transform == player)
         {
             m_IsPlayerInRange = true;
+            gameEnding.CaughtPlayer();
         }
     }
 
@@ -37,7 +38,7 @@ public class Observer : MonoBehaviour
             {
                 if (raycastHit.collider.transform == player)
                 {
-                    
+                
                 }
             }
         }

@@ -4,57 +4,57 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float turnSpeed = 20f;
+     // Variables
+     public float turnSmoothing = 15f; // A smoothing value for turning the player.
+     public float speedDampTime = 0.1f; // The damping for the speed parameter
+ 
+     private Animator anim; // Reference to the animator component.
+ 
+     // Functions
+     void Awake()
+     {
+         anim = GetComponent<Animator>();
+     }
+ 
+     void FixedUpdate()
+     {
+         // Cache the inputs.
+         float h = Input.GetAxis("Horizontal");
+         float v = Input.GetAxis("Vertical");
+ 
+         MovementManagement(h, v);
+     }
+ 
+ /////////////////////////////////////////////CHARACTER MOVEMENT/////////////////////////////////////////
+ 
+     void MovementManagement (float horizontal, float vertical)
+     {
+         // If there is some axis input...
+         if(horizontal != 0f || vertical != 0f)
+         {
+             // ... set the players rotation and set the speed parameter to 5.3f.
+             Rotating(horizontal, vertical);
+             anim.SetFloat("Speed", 5.3f, speedDampTime, Time.deltaTime);
+         }
+         else
+             // Otherwise set the speed parameter to 0.
+             anim.SetFloat("Speed", 0);
+     }
+ 
+     void Rotating (float horizontal, float vertical)
+     {
+         // Create a new vector of the horizontal and vertical inputs.
+         Vector3 targetDirection = new Vector3(horizontal, 0f, vertical);
+         
+         // Create a rotation based on this new vector assuming that up is the global y axis.
+         Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+         
+         // Create a rotation that is an increment closer to the target rotation from the player's rotation.
+         Quaternion newRotation = Quaternion.Lerp(GetComponent<Rigidbody>().rotation, targetRotation, turnSmoothing * Time.deltaTime);
+         
+         // Change the players rotation to this new rotation.
+         GetComponent<Rigidbody>().MoveRotation(newRotation);
 
-
-    Animator m_Animator;
-    Rigidbody m_Rigidbody;
-    AudioSource m_AudioSource;
-    
-    Vector3 m_Movement;
-    Quaternion m_Rotation = Quaternion.identity;
-
-    void Start ()
-    {
-        m_Animator = GetComponent<Animator> ();
-        m_Rigidbody = GetComponent<Rigidbody> ();
-        m_AudioSource = GetComponent<AudioSource> ();
-    }
-
-
-    void FixedUpdate ()
-    {
-        float horizontal = Input.GetAxis ("Horizontal");
-        float vertical = Input.GetAxis ("Vertical");
-        
-        m_Movement.Set(horizontal, 0f, vertical);
-        m_Movement.Normalize ();
-
-        bool hasHorizontalInput = !Mathf.Approximately (horizontal, 0f);
-        bool hasVerticalInput = !Mathf.Approximately (vertical, 0f);
-        bool isWalking = hasHorizontalInput || hasVerticalInput;
-        m_Animator.SetBool ("IsWalking", isWalking);
-        
-        if (isWalking)
-        {
-            if (!m_AudioSource.isPlaying)
-            {
-                m_AudioSource.Play();
-            }
-        }
-        else
-        {
-            m_AudioSource.Stop ();
-        }
-
-        Vector3 desiredForward = Vector3.RotateTowards (transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
-        m_Rotation = Quaternion.LookRotation (desiredForward);
-    }
-
-
-    void OnAnimatorMove ()
-    {
-        m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
-        m_Rigidbody.MoveRotation (m_Rotation);
-    }
+     }
+ 
 }

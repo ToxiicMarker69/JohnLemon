@@ -11647,11 +11647,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 719633953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bb2a5164c3b72f478f642bcab2c0ae8, type: 3}
+  m_Script: {fileID: 11500000, guid: ba2bf325a2e28264c8d365a20c45062e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 5
-  lookRotateSpeed: 90
+  sensitivity: {x: 2000, y: 2000}
 --- !u!1 &720803423
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,13 +7,37 @@ public class PMScript_2 : MonoBehaviour
     [SerializeField] private Vector2 sensitivity;
     [SerializeField] private Vector2 acceleration;
     [SerializeField] private float inputLagPeriod;
+    [SerializeField] private float maxVerticalAngleFromHorizon;
+    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float surfaceLevel = 3.5f;
     private Vector2 velocity;
     private Vector2 rotation; //the current rotation in degrees
     private Vector2 lastInputEvent;//The last recieved non-zerro input value
     private float inputLagTimer;//The time since the last recieved non-zero input value
+    private float activeForwardSpeed, activeStrafeSpeed; //Horizontal/Vertical movement
     
-    
-    // Start is called before the first frame update
+    private void OnEnable() {
+        //Reset the slate
+        velocity = Vector2.zero;
+        inputLagTimer = 0;
+        lastInputEvent = Vector2.zero;
+
+        //Calculate the current rotation by getting the gamObject's local euler angle
+        Vector3 euler = transform.localEulerAngles;
+        //Euler angles range from [0, 360), but we want [-100, 100)
+        if (euler.x >= 180) {
+            euler.x -=360;
+        }
+        euler.x = ClampVerticalAngle(euler.x);
+        //Set the angle here to clamp the current rotation
+        transform.localEulerAngles = euler;
+        //Rotation stores as (horizontal, vertical), which corresponds to the euler angles
+        //around the y (up) axis and the x (right) axis
+        rotation = new Vector2(euler.y, euler.x);
+    }
+    private float ClampVerticalAngle(float angle){
+        return Mathf.Clamp(angle, -maxVerticalAngleFromHorizon, maxVerticalAngleFromHorizon);
+    }
     private Vector2 GetInput() {
         //Add to the lag timer
         inputLagTimer += Time.deltaTime;
@@ -52,9 +76,25 @@ public class PMScript_2 : MonoBehaviour
             Mathf.MoveTowards(velocity.y, wantedVelocity.y, acceleration.y * Time.deltaTime)
         );
         rotation += velocity * Time.deltaTime;
+        rotation.y = ClampVerticalAngle(rotation.y);
         //rotation += wantedVelocity *Time.deltaTime;
 
         //Convert the rotation to euler angles
         transform.localEulerAngles = new Vector3(rotation.y, rotation.x, 0);
+
+        activeForwardSpeed = Input.GetAxisRaw("Vertical") * speed;
+        activeStrafeSpeed = Input.GetAxisRaw("Horizontal") * speed;
+
+
+        if (transform.position.y < surfaceLevel){
+            transform.position += (transform.forward * activeForwardSpeed * Time.deltaTime) + (transform.right * activeStrafeSpeed * Time.deltaTime);
+            transform.position = Vector3.ClampMagnitude(transform.position, speed * speed);
+        }
+        else{
+            transform.position += (transform.right * activeStrafeSpeed * Time.deltaTime);
+            transform.Translate(-Vector3.up * Time.deltaTime, Space.World);
+            transform.position = Vector3.ClampMagnitude(transform.position, speed * speed);
+        };
+        
     }
 }

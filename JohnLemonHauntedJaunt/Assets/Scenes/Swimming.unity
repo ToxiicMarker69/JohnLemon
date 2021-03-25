@@ -11652,7 +11652,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitivity: {x: 2000, y: -2000}
   acceleration: {x: 2000, y: 2000}
-  inputLagPeriod: 0.005
+  inputLagPeriod: 0.001
+  maxVerticalAngleFromHorizon: 90
 --- !u!1 &720803423
 GameObject:
   m_ObjectHideFlags: 0

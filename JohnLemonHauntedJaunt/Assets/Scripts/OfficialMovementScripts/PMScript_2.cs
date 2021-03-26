@@ -59,9 +59,26 @@ public class PMScript_2 : MonoBehaviour
     }
         void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Confined; //Locks Cursor in window until ESC is pressed to leave game view
+        Cursor.visible = false; //Makes Cursor invisible
     }
+    void FixedUpdate()
+    {
+        activeForwardSpeed = Input.GetAxisRaw("Vertical") * speed;
+        activeStrafeSpeed = Input.GetAxisRaw("Horizontal") * speed;
 
+
+        //if (transform.position.y < surfaceLevel){
+            transform.position += (transform.forward * activeForwardSpeed * Time.deltaTime) + (transform.right * activeStrafeSpeed * Time.deltaTime);
+            transform.position = Vector3.ClampMagnitude(transform.position, speed * speed);
+            Debug.Log(transform.position.y);
+        //}
+        // else{
+        //     transform.position += (transform.right * activeStrafeSpeed * Time.deltaTime);//no more vertical movement
+        //     transform.Translate(-Vector3.up * Time.deltaTime, Space.World); // -1 unit/frame vertically in world space if player moves aboce surface
+        //     transform.position = Vector3.ClampMagnitude(transform.position, speed * speed);//same clamp might be able to do something else here
+        // }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -82,19 +99,11 @@ public class PMScript_2 : MonoBehaviour
         //Convert the rotation to euler angles
         transform.localEulerAngles = new Vector3(rotation.y, rotation.x, 0);
 
-        activeForwardSpeed = Input.GetAxisRaw("Vertical") * speed;
-        activeStrafeSpeed = Input.GetAxisRaw("Horizontal") * speed;
+        
 
-
-        if (transform.position.y < surfaceLevel){
-            transform.position += (transform.forward * activeForwardSpeed * Time.deltaTime) + (transform.right * activeStrafeSpeed * Time.deltaTime);
-            transform.position = Vector3.ClampMagnitude(transform.position, speed * speed);
+        if (Input.GetKeyUp(KeyCode.Escape)){
+            Cursor.visible = true;
         }
-        else{
-            transform.position += (transform.right * activeStrafeSpeed * Time.deltaTime);
-            transform.Translate(-Vector3.up * Time.deltaTime, Space.World);
-            transform.position = Vector3.ClampMagnitude(transform.position, speed * speed);
-        };
         
     }
 }

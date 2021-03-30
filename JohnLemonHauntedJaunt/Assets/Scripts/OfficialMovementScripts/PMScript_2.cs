@@ -8,8 +8,8 @@ public class PMScript_2 : MonoBehaviour
     [SerializeField] private Vector2 acceleration;
     [SerializeField] private float inputLagPeriod;
     [SerializeField] private float maxVerticalAngleFromHorizon;
-    [SerializeField] private float speed = 5.0f;
-    [SerializeField] private float surfaceLevel = 3.5f;
+    [SerializeField] private float speed = 10.0f;
+    //[SerializeField] private float surfaceLevel = 3.5f;
     private Vector2 velocity;
     private Vector2 rotation; //the current rotation in degrees
     private Vector2 lastInputEvent;//The last recieved non-zerro input value
@@ -69,9 +69,9 @@ public class PMScript_2 : MonoBehaviour
 
 
         //if (transform.position.y < surfaceLevel){
-            transform.position += (transform.forward * activeForwardSpeed * Time.deltaTime) + (transform.right * activeStrafeSpeed * Time.deltaTime);
-            transform.position = Vector3.ClampMagnitude(transform.position, speed * speed);
-            Debug.Log(transform.position.y);
+        transform.position += (transform.forward * activeForwardSpeed * Time.deltaTime) + (transform.right * activeStrafeSpeed * Time.deltaTime);
+        transform.position = Vector3.ClampMagnitude(transform.position, speed * speed);
+            //Debug.Log("Y Position: " + transform.position.y);
         //}
         // else{
         //     transform.position += (transform.right * activeStrafeSpeed * Time.deltaTime);//no more vertical movement

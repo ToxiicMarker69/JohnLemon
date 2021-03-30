@@ -3,7 +3,12 @@ guid: 5d29eca233db5db40995b1f0a8f4379c
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Coral
+    second: {fileID: 2100000, guid: ae473ebbc64433e4199980125bfa460f, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

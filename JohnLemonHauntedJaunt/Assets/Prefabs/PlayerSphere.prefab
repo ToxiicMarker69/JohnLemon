@@ -76,10 +76,10 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
-  m_Range: 10
-  m_SpotAngle: 75
-  m_InnerSpotAngle: 7
+  m_Intensity: 5
+  m_Range: 30
+  m_SpotAngle: 50
+  m_InnerSpotAngle: 5
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -181,10 +181,10 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
-  m_Range: 10
-  m_SpotAngle: 75
-  m_InnerSpotAngle: 7
+  m_Intensity: 5
+  m_Range: 30
+  m_SpotAngle: 50
+  m_InnerSpotAngle: 5
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -357,7 +357,6 @@ MonoBehaviour:
   inputLagPeriod: 0.001
   maxVerticalAngleFromHorizon: 90
   speed: 5
-  surfaceLevel: 3.5
 --- !u!54 &4172284252063002874
 Rigidbody:
   m_ObjectHideFlags: 0
